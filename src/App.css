@@ -31,12 +31,13 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 1.5rem 2rem;
+    padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+    /* TOTO ZAROVNÁ VŠE NA STŘED */
     box-sizing: border-box;
-    /* Zajistí, že padding neovlivní šířku */
+    z-index: 10;
 }
 
 .logo-area {
@@ -45,14 +46,19 @@ body {
     text-align: center;
 }
 
+/* Zmenšení loga */
 .top-logo {
-    width: 150px;
-    /* Upravte velikost podle potřeby */
-    height: auto;
+    height: 40px;
+    /* Upravte výšku podle potřeby */
+    width: auto;
+    vertical-align: middle;
 }
 
-.user-controls {
-    /* Tento kontejner drží přihlašovací info vpravo nahoře */
+/* Úprava odsazení a zarovnání user-controls */
+.user-controls .auth-container {
+    padding: 0.4rem 0.5rem 0.4rem 1rem;
+    /* align-items: center; by zde již mělo být z minula */
+
 }
 
 .auth-container {
@@ -175,4 +181,423 @@ body {
 }
 
 .task-input::placeholder {
-    color: #4c566a; }
+    color: #4c566a;
+}
+
+/* Styly pro novou navigaci v datu */
+.date-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3b4252;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 2rem;
+}
+
+.date-nav-button,
+.today-button {
+    background: none;
+    border: 1px solid #4c566a;
+    color: #d8dee9;
+    padding: 0.5rem 0.9rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    font-size: 1.2rem;
+}
+
+.date-nav-button:hover,
+.today-button:hover {
+    background-color: #4c566a;
+}
+
+.date-display {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.date-display h3 {
+    margin: 0;
+    font-weight: 500;
+    color: #eceff4;
+    font-size: 1.2rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* =================================================================== */
+/* VYLEPŠENÉ STYLY PRO VYHLEDÁVACÍ FORMULÁŘ                            */
+/* =================================================================== */
+
+.search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    /* Větší mezery mezi prvky */
+}
+
+.search-form .form-row {
+    display: flex;
+    flex-direction: column;
+    /* Na mobilu vše pod sebou */
+    gap: 1.2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    position: relative;
+    width: 100%;
+}
+
+.form-group label {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #d8dee9;
+    padding-left: 0.2rem;
+}
+
+/* Společné styly pro select i date input */
+.form-group select,
+.form-group input[type="date"] {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border: 1px solid #4c566a;
+    border-radius: 6px;
+    /* Mírně větší zaoblení */
+    background-color: #2e3440;
+    color: #eceff4;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Vylepšení :focus stavu */
+.form-group select:focus,
+.form-group input[type="date"]:focus {
+    outline: none;
+    border-color: #88c0d0;
+    box-shadow: 0 0 0 2px rgba(136, 192, 208, 0.2);
+}
+
+/* Vlastní šipka pro select (dropdown) */
+.form-group::after {
+    content: '▼';
+    font-size: 1rem;
+    color: #88c0d0;
+    position: absolute;
+    right: 1.2rem;
+    top: 3.2rem;
+    /* Upraveno pro přesné centrování */
+    pointer-events: none;
+}
+
+.search-button,
+.search-form .auth-button {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    background-color: #88c0d0;
+    color: #2e3440;
+    margin-top: 0.5rem;
+    /* Menší horní margin */
+    transition: background-color 0.2s ease;
+}
+
+.search-button:hover:not(:disabled) {
+    background-color: #9accd9;
+}
+
+.search-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* Tmavý vzhled pro kalendář v prohlížečích, které to podporují */
+input[type="date"] {
+    color-scheme: dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(0.8) brightness(100%);
+}
+
+/* === Inteligentní změna pro větší obrazovky (tablety a desktopy) === */
+@media (min-width: 768px) {
+    .search-form .form-row {
+        flex-direction: row;
+        /* Na desktopu dáme prvky vedle sebe */
+        align-items: flex-end;
+        /* Zarovnáme je ke spodní hraně */
+        gap: 1.5rem;
+    }
+
+    .form-group.full-width {
+        flex-basis: 100%;
+    }
+
+    /* Tlačítko pro vyhledávání na desktopu */
+    .search-form .form-row:last-of-type .form-group {
+        margin-top: 1rem;
+        /* Odsadíme tlačítko od zbytku formuláře */
+    }
+}
+
+
+/* Styly pro novou navigaci v datu */
+.date-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3b4252;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 2rem;
+}
+
+.date-nav-button,
+.today-button {
+    background: none;
+    border: 1px solid #4c566a;
+    color: #d8dee9;
+    padding: 0.5rem 0.9rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    font-size: 1.2rem;
+}
+
+.date-nav-button:hover,
+.today-button:hover {
+    background-color: #4c566a;
+}
+
+.date-display {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.date-display h3 {
+    margin: 0;
+    font-weight: 500;
+    color: #eceff4;
+    font-size: 1.2rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* =================================================================== */
+/* VYLEPŠENÉ STYLY PRO VYHLEDÁVACÍ FORMULÁŘ                            */
+/* =================================================================== */
+
+.search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    /* Větší mezery mezi prvky */
+}
+
+.search-form .form-row {
+    display: flex;
+    flex-direction: column;
+    /* Na mobilu vše pod sebou */
+    gap: 1.2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    position: relative;
+    width: 100%;
+}
+
+.form-group label {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #d8dee9;
+    padding-left: 0.2rem;
+}
+
+/* Společné styly pro select i date input */
+.form-group select,
+.form-group input[type="date"] {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border: 1px solid #4c566a;
+    border-radius: 6px;
+    /* Mírně větší zaoblení */
+    background-color: #2e3440;
+    color: #eceff4;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Vylepšení :focus stavu */
+.form-group select:focus,
+.form-group input[type="date"]:focus {
+    outline: none;
+    border-color: #88c0d0;
+    box-shadow: 0 0 0 2px rgba(136, 192, 208, 0.2);
+}
+
+/* Vlastní šipka pro select (dropdown) */
+.form-group::after {
+    content: '▼';
+    font-size: 1rem;
+    color: #88c0d0;
+    position: absolute;
+    right: 1.2rem;
+    top: 3.2rem;
+    /* Upraveno pro přesné centrování */
+    pointer-events: none;
+}
+
+.search-button,
+.search-form .auth-button {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    background-color: #88c0d0;
+    color: #2e3440;
+    margin-top: 0.5rem;
+    /* Menší horní margin */
+    transition: background-color 0.2s ease;
+}
+
+.search-button:hover:not(:disabled) {
+    background-color: #9accd9;
+}
+
+.search-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* Tmavý vzhled pro kalendář v prohlížečích, které to podporují */
+input[type="date"] {
+    color-scheme: dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(0.8) brightness(100%);
+}
+
+/* === Inteligentní změna pro větší obrazovky (tablety a desktopy) === */
+@media (min-width: 768px) {
+    .search-form .form-row {
+        flex-direction: row;
+        /* Na desktopu dáme prvky vedle sebe */
+        align-items: flex-end;
+        /* Zarovnáme je ke spodní hraně */
+        gap: 1.5rem;
+    }
+
+    .form-group.full-width {
+        flex-basis: 100%;
+    }
+
+    /* Tlačítko pro vyhledávání na desktopu */
+    .search-form .form-row:last-of-type .form-group {
+        margin-top: 1rem;
+        /* Odsadíme tlačítko od zbytku formuláře */
+    }
+}
+
+/* Nový styl pro odkaz se jménem uživatele */
+.user-link {
+    color: white;
+    text-decoration: none;
+    line-height: 30px;
+    /* Zarovná text na stejnou úroveň jako 30px vysoký avatar */
+}
+
+.user-link:hover {
+    text-decoration: underline;
+}
+
+/* Nový styl pro ikonu odhlášení */
+.logout-button-icon {
+    background: none;
+    border: 1px solid #d8dee9;
+    color: #d8dee9;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.logout-button-icon:hover {
+    background-color: #bf616a;
+    border-color: #bf616a;
+}
+
+/* === Finální vylepšení pro Admin Dashboard === */
+
+/* Mírně zúžíme hlavní box na větších obrazovkách pro lepší čitelnost */
+.content-box {
+    max-width: 900px;
+}
+
+/* Zajistíme, aby přihlašovací box zůstal užší */
+.login-box {
+    max-width: 500px;
+}
+
+/* Vylepšení tabulky */
+.routes-table {
+    border-spacing: 0;
+    /* Odstraní drobné mezery mezi buňkami */
+    border-collapse: separate;
+    /* Nutné pro border-radius na buňkách */
+    border-radius: 6px;
+    overflow: hidden;
+    /* Ořízne obsah podle zaoblených rohů */
+}
+
+.routes-table th,
+.routes-table td {
+    vertical-align: middle;
+    /* Lepší vertikální zarovnání obsahu */
+}
+
+/* Zarovnání posledního sloupce hlavičky ("Jede") na střed */
+.routes-table th:last-child {
+    text-align: center;
+}
+
+/* Plynulejší přechod při najetí myší */
+.clickable-row:hover {
+    background-color: rgba(129, 161, 193, 0.3) !important;
+    transition: background-color 0.15s ease-in-out;
+}

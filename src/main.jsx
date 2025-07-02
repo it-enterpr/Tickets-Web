@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
 
 // Import globálních stylů a témat
@@ -13,7 +14,7 @@ import './themes/brown.css';
 import './themes/orange.css';
 
 // Import pro Tooltip
-import 'react-tooltip/dist/react-tooltip.css'; // <-- TENTO ŘÁDEK JE KLÍČOVÁ OPRAVA
+import 'react-tooltip/dist/react-tooltip.css';
 
 // Import Context Providerů
 import { ThemeProvider } from './contexts/ThemeContext.jsx';
@@ -27,8 +28,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider>
       <MenuProvider>
-        <UserProvider> {/* <-- OBALENÍ */}
-          <App />
+        <UserProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </UserProvider>
       </MenuProvider>
     </ThemeProvider>
