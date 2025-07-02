@@ -232,19 +232,25 @@ const ClientView = ({ user }) => {
   const navigate = useNavigate();
   const [stops, setStops] = useState([]);
   const [isLoadingStops, setIsLoadingStops] = useState(true);
+  const [error, setError] = useState('');
 
   // Tento useEffect se spustí jen jednou a načte seznam všech zastávek z API
   useEffect(() => {
     const fetchStops = async () => {
+      setIsLoadingStops(true);
+      setError('');
       try {
-        const response = await fetch('http://localhost:41999/api/v1/bus_points');
+        // Používáme relativní cestu, Nginx se postará o zbytek
+        const response = await fetch('/api/v1/bus_points');
         if (!response.ok) {
-          throw new Error('Nepodařilo se načíst zastávky');
+          const errorData = await response.json();
+          throw new Error(errorData.detail || 'Nepodařilo se načíst zastávky');
         }
         const data = await response.json();
         setStops(data);
       } catch (error) {
         console.error("Chyba při načítání zastávek:", error);
+        setError('Chyba: Zastávky se nepodařilo načíst.');
       } finally {
         setIsLoadingStops(false);
       }
@@ -271,14 +277,13 @@ const ClientView = ({ user }) => {
   return (
     <div className="content-box">
       <h2>Vyhledat spojení</h2>
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSearch} className="search-form">
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="from-location">Odkud</label>
             <select id="from-location" name="from" disabled={isLoadingStops} required>
-              {isLoadingStops ? (
-                <option>Načítám...</option>
-              ) : (
+              {isLoadingStops ? <option>Načítám...</option> : (
                 <>
                   <option value="">-- Vyberte výchozí bod --</option>
                   {stops.map(stop => <option key={stop.id} value={stop.id}>{stop.name}</option>)}
@@ -289,9 +294,7 @@ const ClientView = ({ user }) => {
           <div className="form-group">
             <label htmlFor="to-location">Kam</label>
             <select id="to-location" name="to" disabled={isLoadingStops} required>
-              {isLoadingStops ? (
-                <option>Načítám...</option>
-              ) : (
+              {isLoadingStops ? <option>Načítám...</option> : (
                 <>
                   <option value="">-- Vyberte cíl --</option>
                   {stops.map(stop => <option key={stop.id} value={stop.id}>{stop.name}</option>)}
@@ -313,7 +316,6 @@ const ClientView = ({ user }) => {
         </div>
       </form>
       <br />
-      {/* Odkaz na "Moje jízdenky" pro přihlášené klienty */}
       {user && <Link to="/my-tickets" className="auth-button">Zobrazit moje jízdenky</Link>}
     </div>
   );
